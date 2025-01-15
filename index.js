@@ -1,20 +1,39 @@
-var fs = require("fs");
-
-const data = "Anuj Pandey";
-
-fs.writeFile('./textFiles/hello.txt',data,(err,data)=>{
-    if (err) throw err;
-    console.log("The file has been saved!");
-})
+let yargs = require("yargs")
+let commands = require("./commands");
 
 
-fs.readFile('./textFiles/hello.txt','utf-8',(err,data)=>{
-    if (err) throw err;
-    console.log(data);
-})
+let command = yargs.argv._[0];
+let title = yargs.argv.title;
+let body = yargs.argv.body;
 
 
-fs.unlink('./textFiles/delete.txt',(err)=>{
-    if (err) throw err;
-    console.log("File has been deleted");
-})
+if(command=="add"){
+    if(title && body){
+        commands.add(title,body);
+    }else{
+        console.log("Please provide both title and body.");
+    }
+}
+else if(command=="read"){
+    commands.read();
+}
+else if(command=="list"){
+    commands.list();
+}
+else if(command=="delete"){
+    if(title){
+        commands.deleteNotes(title);
+    }else{
+        console.log("Please provide title");
+    }
+}
+else if(command=="update"){
+    if(title && body){
+        commands.update(title,body);
+    }else{
+        console.log("Please provide both title and body.");
+    }
+}
+else{
+    console.log("pls enter a valid command!");
+}
